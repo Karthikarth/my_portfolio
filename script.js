@@ -2,16 +2,212 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
+// Create backdrop element
+const backdrop = document.createElement('div');
+backdrop.className = 'nav-backdrop';
+document.body.appendChild(backdrop);
+
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
+    backdrop.classList.toggle('active');
+    
+    // Prevent body scroll when sidebar is open
+    if (navMenu.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
 });
 
 // Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
     hamburger.classList.remove('active');
     navMenu.classList.remove('active');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = 'auto';
 }));
+
+// Close mobile menu when clicking on backdrop
+backdrop.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('active');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Close mobile menu on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Enhanced Email Functionality
+function openEmailClient() {
+    const email = 'karthimk8098@gmail.com';
+    const subject = 'Portfolio Inquiry - Project Discussion';
+    const body = `Hi Karthi,
+
+I would like to discuss a project with you.
+
+*Project Details:*
+• Project Type:
+• Budget Range:
+• Timeline:
+• Additional Requirements:
+
+*My Contact Information:*
+• Name:
+• Email:
+• Phone:
+
+Please let me know when you are available for a discussion.
+
+Best regards,`;
+
+    // Try to detect the user's preferred email client
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    if (userAgent.includes('gmail') || userAgent.includes('google')) {
+        // Gmail web interface
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(gmailUrl, '_blank');
+    } else if (userAgent.includes('outlook') || userAgent.includes('microsoft')) {
+        // Outlook web interface
+        const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(outlookUrl, '_blank');
+    } else {
+        // Default mailto (opens default email client)
+        const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoUrl;
+    }
+}
+
+// Add click event to email button
+document.addEventListener('DOMContentLoaded', function() {
+    const emailButton = document.querySelector('a[href^="mailto:"]');
+    if (emailButton) {
+        emailButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            openEmailClient();
+        });
+    }
+});
+
+// Individual email client functions
+function openGmail() {
+    const email = 'karthimk8098@gmail.com';
+    const subject = 'Portfolio Inquiry - Project Discussion';
+    const body = `Hi Karthi,
+
+I would like to discuss a project with you.
+
+*Project Details:*
+• Project Type:
+• Budget Range:
+• Timeline:
+• Additional Requirements:
+
+*My Contact Information:*
+• Name:
+• Email:
+• Phone:
+
+Please let me know when you are available for a discussion.
+
+Best regards,`;
+
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(gmailUrl, '_blank');
+}
+
+function openOutlook() {
+    const email = 'karthimk8098@gmail.com';
+    const subject = 'Portfolio Inquiry - Project Discussion';
+    const body = `Hi Karthi,
+
+I would like to discuss a project with you.
+
+*Project Details:*
+• Project Type:
+• Budget Range:
+• Timeline:
+• Additional Requirements:
+
+*My Contact Information:*
+• Name:
+• Email:
+• Phone:
+
+Please let me know when you are available for a discussion.
+
+Best regards,`;
+
+    const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(outlookUrl, '_blank');
+}
+
+function openDefaultEmail() {
+    const email = 'karthimk8098@gmail.com';
+    const subject = 'Portfolio Inquiry - Project Discussion';
+    const body = `Hi Karthi,
+
+I would like to discuss a project with you.
+
+*Project Details:*
+• Project Type:
+• Budget Range:
+• Timeline:
+• Additional Requirements:
+
+*My Contact Information:*
+• Name:
+• Email:
+• Phone:
+
+Please let me know when you are available for a discussion.
+
+Best regards,`;
+
+    const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
+}
+
+// Toggle custom budget input
+function toggleBudgetInput() {
+    const budgetSelect = document.getElementById('budget-select');
+    const budgetCustom = document.getElementById('budget-custom');
+    
+    if (budgetSelect.value === 'custom') {
+        budgetCustom.style.display = 'block';
+        budgetCustom.required = true;
+        budgetCustom.focus();
+    } else {
+        budgetCustom.style.display = 'none';
+        budgetCustom.required = false;
+        budgetCustom.value = '';
+    }
+}
+
+// Toggle custom timeline input
+function toggleTimelineInput() {
+    const timelineSelect = document.getElementById('timeline-select');
+    const timelineCustom = document.getElementById('timeline-custom');
+    
+    if (timelineSelect.value === 'custom') {
+        timelineCustom.style.display = 'block';
+        timelineCustom.required = true;
+        timelineCustom.focus();
+    } else {
+        timelineCustom.style.display = 'none';
+        timelineCustom.required = false;
+        timelineCustom.value = '';
+    }
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -232,12 +428,30 @@ function sendFormToWhatsApp() {
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value.trim();
     const message = document.getElementById('message').value.trim();
-    const budget = document.getElementById('budget').value;
-    const timeline = document.getElementById('timeline').value;
+    
+    // Get budget value (either from select or custom input)
+    const budgetSelect = document.getElementById('budget-select').value;
+    const budgetCustom = document.getElementById('budget-custom').value.trim();
+    const budget = budgetSelect === 'custom' ? budgetCustom : budgetSelect;
+    
+    // Get timeline value (either from select or custom input)
+    const timelineSelect = document.getElementById('timeline-select').value;
+    const timelineCustom = document.getElementById('timeline-custom').value.trim();
+    const timeline = timelineSelect === 'custom' ? timelineCustom : timelineSelect;
     
     // Validate required fields
     if (!name || !email || !subject || !message) {
         alert('Please fill in all required fields (Name, Email, Subject, and Message)');
+        return;
+    }
+    
+    // Validate custom inputs if selected
+    if (budgetSelect === 'custom' && !budgetCustom) {
+        alert('Please enter your custom budget amount');
+        return;
+    }
+    if (timelineSelect === 'custom' && !timelineCustom) {
+        alert('Please enter your custom timeline');
         return;
     }
     
@@ -251,10 +465,12 @@ function sendFormToWhatsApp() {
     
     // Add optional fields if provided
     if (budget) {
-        whatsappMessage += `*Budget Range:* ${budget}%0A`;
+        const budgetLabel = budgetSelect === 'custom' ? 'Custom Budget' : 'Budget Range';
+        whatsappMessage += `*${budgetLabel}:* ${budget}%0A`;
     }
     if (timeline) {
-        whatsappMessage += `*Project Timeline:* ${timeline}%0A`;
+        const timelineLabel = timelineSelect === 'custom' ? 'Custom Timeline' : 'Project Timeline';
+        whatsappMessage += `*${timelineLabel}:* ${timeline}%0A`;
     }
     
     whatsappMessage += `%0A---%0A`;
